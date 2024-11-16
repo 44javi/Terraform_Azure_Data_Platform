@@ -1,4 +1,4 @@
-# variables.tf
+# root variables.tf
 
 variable "client" {
   description = "Client name for resource naming."
@@ -17,10 +17,10 @@ variable "region" {
 }
 
 # Resource Group Name
-variable "resource_group_name" {
-  description = "Name of the resource group"
-  type        = string
-}
+#variable "resource_group_name" {
+#  description = "Name of the resource group"
+#  type        = string
+#}
 
 # VNET address space
 variable "vnet_address_space" {
@@ -41,5 +41,25 @@ variable "alert_email" {
 
 variable "suffix" {
   description = "Numerical identifier for resources"
+  type        = string
+}
+
+variable "owner" {
+  description = "Person responsable for the resource"
+  type        = string
+}
+
+variable "project" {
+  description = "Main project associated with this deployment"
+  type        = string
+}
+
+variable "created_by" {
+  description = "Tag showing Terraform created this resource"
+  type        = string
+}
+
+variable "subscription_id" {
+  description = "Subcription_ID to deploy resources to"
   type        = string
 }

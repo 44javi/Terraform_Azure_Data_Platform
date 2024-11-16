@@ -5,6 +5,11 @@ variable "resource_group_name" {
   type        = string
 }
 
+variable "resource_group_id" {
+  description = "The full resource ID of the resource group"
+  type        = string
+}
+
 variable "vnet_address_space" {
   description = "The address space for the virtual network"
   type        = list(string)
@@ -13,11 +18,6 @@ variable "vnet_address_space" {
 variable "subnet_address_prefixes" {
   description = "A map of address prefixes for each subnet"
   type        = map(string)
-}
-
-variable "resource_group_id" {
-  description = "The full resource ID of the resource group"
-  type        = string
 }
 
 variable "region" {
@@ -30,8 +30,12 @@ variable "client" {
   type = string
 }
 
-variable "environment" {
-  description = "Environment for resources (e.g., dev, prod)"
-  type = string
+variable "suffix" {
+  description = "Numerical identifier for resources"
+  type        = string
 }
 
+variable "default_tags" {
+    description = "Default tags to apply to all resources"
+  type = map(string)
+}

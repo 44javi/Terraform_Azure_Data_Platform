@@ -5,13 +5,13 @@ output "vnet_id" {
 }
 
 output "subnet_id" {
-  value = azurerm_subnet.subnet.id
+  value = azurerm_subnet.private.id
 }
 
 output "bastion_subnet_id" {
-  value = azurerm_subnet.AzureBastionSubnet.id
+  value = azurerm_subnet.bastion.id
 }
-
+/*
 output "databricks_public_subnet_name" {
   value = azurerm_subnet.databricks_public_subnet.name
 }
@@ -39,9 +39,10 @@ output "databricks_private_subnet_nsg_assoc_id" {
 }
 
 output "nat_gateway_id" {
-  value = azurerm_nat_gateway.nat_gateway.id
+  value = azurerm_nat_gateway.this.id
 }
 
 output "public_ip_id" {
-  value = azurerm_public_ip.nat_gateway_ip.id
+  value = azurerm_public_ip.nat_gateway.id
 }
+*/
