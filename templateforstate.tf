@@ -6,3 +6,5 @@ container_name      = "tfstate"
 key                 = "REPLACE_WITH_STATE_FILE_NAME"
 use_azuread_auth    = true
 */
+
+# terraform init -backend-config=environments/backend_dev.hcl

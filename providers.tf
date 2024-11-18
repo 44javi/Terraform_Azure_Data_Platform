@@ -1,7 +1,7 @@
 # Root Providers and backend
 
 terraform {
-  #backend "azurerm" {} # Settings come from backend.hcl
+  backend "azurerm" {} # Settings come from backend.hcl
 
   # Provider requirements
   required_providers {

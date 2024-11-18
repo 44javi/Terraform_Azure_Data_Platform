@@ -2,4 +2,5 @@
 Modular Terraform repository for Azure infrastructure.
 
 Create management group
-Subscriptions 
+Subscriptions
+Assign Storage Blob Data Contributor 
