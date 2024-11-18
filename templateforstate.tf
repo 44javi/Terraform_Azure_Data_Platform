@@ -1,4 +1,4 @@
-# backend.hcl.example - Template for team members
+# backend_dev.hcl - Template for team members
 /*
 resource_group_name  = "REPLACE_WITH_RG_NAME"
 storage_account_name = "REPLACE_WITH_SA_NAME"

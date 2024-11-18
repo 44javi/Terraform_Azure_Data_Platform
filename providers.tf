@@ -13,6 +13,14 @@ terraform {
       source  = "hashicorp/azuread"
       version = "~> 3.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.6.3"
+    }
+    databricks = {
+      source  = "databricks/databricks"
+      version = "1.5.0"
+    }
   }
 }
 
@@ -26,3 +34,4 @@ provider "azurerm" {
 provider "azuread" {
   # configuration options
 }
+

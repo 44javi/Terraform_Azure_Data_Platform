@@ -1,3 +1,5 @@
+# Module_blocks in root
+
 module "network" {
   source                  = "./modules/network"
   resource_group_name     = azurerm_resource_group.main.name
@@ -8,4 +10,20 @@ module "network" {
   client                  = var.client
   suffix                  = var.suffix
   default_tags            = local.default_tags
+}
+
+module "data_resources" {
+  source                  = "./modules/data_resources"
+  resource_group_name     = azurerm_resource_group.main.name
+  resource_group_id       = azurerm_resource_group.main.id
+  region                  = var.region
+  vnet_id                 = module.network.vnet_id
+  vnet_name               = module.network.vnet_name
+  subnet_id               = module.network.subnet_id
+  subnet_address_prefixes = var.subnet_address_prefixes
+  client                  = var.client
+  suffix                  = var.suffix
+  default_tags            = local.default_tags
+  nat_gateway_id          = module.network.nat_gateway_id
+  public_ip_id            = module.network.public_ip_id
 }
