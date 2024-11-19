@@ -35,3 +35,12 @@ provider "azuread" {
   # configuration options
 }
 
+provider "databricks" {
+  alias = "create_workspace"
+  # Basic configuration without host
+}
+
+
+provider "databricks" {
+  host = module.data_resources.workspace_url
+}

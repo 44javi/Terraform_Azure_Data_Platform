@@ -1,5 +1,8 @@
 # data_resources module
 
+# Get Azure subscription details
+data "azurerm_client_config" "current" {}
+
 # Random string for storage names
 resource "random_string" "this" {
   length  = 6
@@ -27,6 +30,20 @@ resource "azurerm_storage_account" "adls" {
     }
   }
 
+}
+
+# Container for raw (input) data
+resource "azurerm_storage_container" "bronze" {
+  name                  = var.bronze_container
+  storage_account_id  = azurerm_storage_account.adls.id
+  container_access_type = "private"
+}
+
+# Container for processed (output) data
+resource "azurerm_storage_container" "gold" {
+  name                  = var.gold_container
+  storage_account_id  = azurerm_storage_account.adls.id
+  container_access_type = "private"
 }
 
 # Private Endpoint for ADLS (Azure Data Lake Storage)
@@ -73,6 +90,42 @@ resource "azurerm_databricks_workspace" "this" {
   ]
 }
 
+locals {
+  notebook_template = file("${path.module}/notebooks/gzip_to_parquet.py")
+  notebook_content = replace(
+    replace(
+      replace(
+        replace(
+          replace(
+            local.notebook_template,
+            "STORAGE_ACCOUNT_NAME",
+            azurerm_storage_account.adls.name
+          ),
+          "BRONZE_CONTAINER_NAME",
+          var.bronze_container
+        ),
+        "GOLD_CONTAINER_NAME",
+        var.gold_container
+      ),
+      "MANAGED_IDENTITY_CLIENT_ID",
+      azurerm_user_assigned_identity.databricks.client_id
+    ),
+    "TENANT_ID",
+    data.azurerm_client_config.current.tenant_id
+  )
+}
+
+resource "databricks_notebook" "gzip_to_parquet" {
+  path     = "/Shared/transformation/gzip_to_parquet"
+  language = "PYTHON"
+  source   = "${path.module}/notebooks/gzip_to_parquet.py"
+
+  depends_on = [
+    azurerm_databricks_workspace.this,
+    azurerm_storage_container.bronze,
+    azurerm_storage_container.gold
+  ]
+}
 
 # Public Subnet for Databricks
 resource "azurerm_subnet" "databricks_public_subnet" {
@@ -135,7 +188,7 @@ resource "azurerm_network_security_group" "databricks_public_nsg" {
 
 # NSG for Private Subnet
 resource "azurerm_network_security_group" "databricks_private_nsg" {
-  name                = "databricks_private_nsg"
+  name                = "${var.client}_databricks_private_nsg_${var.suffix}"
   location            = var.region
   resource_group_name = var.resource_group_name
 
@@ -169,6 +222,7 @@ resource "azurerm_subnet_nat_gateway_association" "databricks_private" {
 
 
 # Data Permissions
+
 /*
 # Managed Identity for Azure Data Factory (ADF)
 # This creates a user-assigned managed identity for ADF
@@ -213,3 +267,4 @@ resource "azurerm_role_assignment" "databricks_identity_access" {
   role_definition_name = "Contributor"
   principal_id         = azurerm_user_assigned_identity.databricks.principal_id
 }
+

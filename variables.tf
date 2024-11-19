@@ -63,3 +63,13 @@ variable "subscription_id" {
   description = "Subcription_ID to deploy resources to"
   type        = string
 }
+
+variable "bronze_container" {
+  description = "Container for Bronze: Raw/ingested data"
+  type        = string
+}
+
+variable "gold_container" {
+  description = "Container for Gold: Processed/refined data"
+  type        = string
+}

@@ -173,13 +173,8 @@ output "ssh_public_key" {
 }
 
 
-*/
+--------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-/*
 # Site to Site VPN 
 
 # Key for VPN
@@ -299,7 +294,7 @@ resource "databricks_job" "gzip_to_parquet_job" {
   }
 
   notebook_task {
-    notebook_path = "/Workspace/Users/javier_pacheco@nihonkohden.com/Transformations" #TBD
+    notebook_path = "/Workspace/shared/Transformations" #TBD
   }
   
   schedule {

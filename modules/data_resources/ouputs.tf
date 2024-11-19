@@ -19,4 +19,15 @@ output "datalake_connection" {
   description = "The primary connection string for the storage account"
   value       = azurerm_storage_account.adls_storage.primary_connection_string
 }
+
 */
+
+output "workspace_url" {
+  description = "The workspace URL of the Databricks workspace"
+  value       = azurerm_databricks_workspace.this.workspace_url
+}
+
+output "workspace_id" {
+  description = "The ID of the Databricks workspace"
+  value       = azurerm_databricks_workspace.this.id
+}

@@ -59,3 +59,13 @@ variable "public_ip_id" {
   description = "id of gateway public ip"
   type = string
 }
+
+variable "bronze_container" {
+  description = "Name of the container for raw/bronze data"
+  type        = string
+}
+
+variable "gold_container" {
+  description = "Name of the container for processed/gold data"
+  type        = string
+}
