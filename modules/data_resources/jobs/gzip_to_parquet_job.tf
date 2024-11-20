@@ -1,25 +1,20 @@
-# Databricks Job using a Job Cluster
 resource "databricks_job" "gzip_to_parquet_job" {
   name     = "${var.client}_gzip_to_parquet_job_${var.suffix}"
-
   job_cluster {
     job_cluster_key = "gzip_parquet_cluster"
     new_cluster {
-      spark_version = "14.3.x-photon-scala2.12"  # Latest LTS version with Photon
+      spark_version = "14.3.x-photon-scala2.12"
       node_type_id  = "Standard_D3_v2"
-      
+     
       # Single-node configuration
       spark_conf = {
-        # Cluster configuration
         "spark.databricks.cluster.profile" : "singleNode"
         "spark.master" : "local[*]"
-        
-        # OAuth configuration for ADLS access
-        "fs.azure.account.auth.type" : "OAuth"
-        "fs.azure.account.oauth.provider.type" : "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider"
-        "fs.azure.account.oauth2.client.id" : var.managed_identity_client_id
-        "fs.azure.account.oauth2.client.endpoint" : "https://login.microsoftonline.com/${var.tenant_id}/oauth2/token"
-        
+       
+        # Azure Data Lake Storage access configuration
+        "spark.databricks.passthrough.enabled": "true"
+        "spark.databricks.azure.adls.gen2.implementation.enabled": "true"
+       
         # Performance optimizations
         "spark.databricks.photon.enabled" : "true"
         "spark.databricks.io.cache.enabled" : "true"
@@ -29,6 +24,7 @@ resource "databricks_job" "gzip_to_parquet_job" {
         "ResourceClass" = "SingleNode"
         "Environment"   = "Development"
         "Version"      = "LTS-14.3"
+        "DatabricksIdentityId" = var.databricks_identity_id
       }
 
       azure_attributes {
@@ -39,9 +35,9 @@ resource "databricks_job" "gzip_to_parquet_job" {
     }
   }
 
- task {
+  task {
     task_key = "gzip_to_parquet_task"
-    
+   
     notebook_task {
       notebook_path = var.notebook_path
       base_parameters = {
@@ -54,13 +50,11 @@ resource "databricks_job" "gzip_to_parquet_job" {
     job_cluster_key = "gzip_parquet_cluster"
   }
 
-
-/*
+  /*
   # Set a schedule
   schedule {
-    quartz_cron_expression = "0 0 * * * ?" # Run every hour
+    quartz_cron_expression = "0 0 * ** ?" # Run every hour
     timezone_id = "UTC"
   }
-*/
-
+  */
 }

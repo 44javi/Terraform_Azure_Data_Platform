@@ -1,8 +1,10 @@
 from pyspark.sql import SparkSession
 
-# Initialize Spark Session
+# Initialize Spark Session with managed identity configuration
 spark = SparkSession.builder \
     .appName("GZIP_Parquet_Test") \
+    .config("fs.azure.account.auth.type", "CustomAccessToken") \
+    .config("fs.azure.account.custom.token.provider.class", spark.conf.get("spark.databricks.passthrough.adls.gen2.tokenProviderClassName")) \
     .getOrCreate()
 
 # Get parameters from Databricks widgets

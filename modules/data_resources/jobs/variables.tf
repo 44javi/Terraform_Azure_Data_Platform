@@ -8,8 +8,8 @@ variable "suffix" {
   type        = string
 }
 
-variable "managed_identity_client_id" {
-  description = "Client ID of the managed identity"
+variable "databricks_identity_id" {
+  description = "Client ID of the user-assigned managed identity for Databricks"
   type        = string
 }
 

@@ -25,7 +25,7 @@ module "jobs" {
 
   client                    = var.client
   suffix                    = var.suffix
-  managed_identity_client_id = azurerm_user_assigned_identity.databricks.client_id
+  databricks_identity_id = azurerm_user_assigned_identity.databricks.client_id
   tenant_id                 = data.azurerm_client_config.current.tenant_id
   notebook_path            = databricks_notebook.gzip_to_parquet.path
   storage_account_name     = azurerm_storage_account.adls.name

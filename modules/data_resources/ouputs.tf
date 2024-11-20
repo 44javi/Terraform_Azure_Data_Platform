@@ -31,3 +31,8 @@ output "workspace_id" {
   description = "The ID of the Databricks workspace"
   value       = azurerm_databricks_workspace.this.id
 }
+
+output "databricks_identity_id" {
+  description = "Client ID of the user-assigned managed identity for Databricks"
+  value       = azurerm_user_assigned_identity.databricks.client_id
+}
