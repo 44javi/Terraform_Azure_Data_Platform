@@ -1,0 +1,183 @@
+[34mterraform scan results:
+[36m
+Passed checks: 27, Failed checks: 12, Skipped checks: 0
+
+[97mCheck: CKV_AZURE_36: "Ensure 'Trusted Microsoft Services' is enabled for Storage Account access"
+[32m	PASSED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \modules\data_resources\main.tf:14-33
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/enable-trusted-microsoft-services-for-storage-account-access
+[97mCheck: CKV_AZURE_3: "Ensure that 'enable_https_traffic_only' is enabled"
+[32m	PASSED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \modules\data_resources\main.tf:14-33
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/azr-general-3
+[97mCheck: CKV_AZURE_190: "Ensure that Storage blobs restrict public access"
+[32m	PASSED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \modules\data_resources\main.tf:14-33
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/azr-networking-190
+[97mCheck: CKV_AZURE_34: "Ensure that 'Public access level' is set to Private for blob containers"
+[32m	PASSED for resource: module.data_resources.azurerm_storage_container.bronze
+[35m	File: \modules\data_resources\main.tf:36-40
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/set-public-access-level-to-private-for-blob-containers
+[97mCheck: CKV_AZURE_34: "Ensure that 'Public access level' is set to Private for blob containers"
+[32m	PASSED for resource: module.data_resources.azurerm_storage_container.gold
+[35m	File: \modules\data_resources\main.tf:43-47
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/set-public-access-level-to-private-for-blob-containers
+[97mCheck: CKV_AZURE_160: "Ensure that HTTP (port 80) access is restricted from the internet"
+[32m	PASSED for resource: module.data_resources.azurerm_network_security_group.databricks_public_nsg
+[35m	File: \modules\data_resources\main.tf:181-186
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/ensure-azure-http-port-80-access-from-the-internet-is-restricted
+[97mCheck: CKV_AZURE_9: "Ensure that RDP access is restricted from the internet"
+[32m	PASSED for resource: module.data_resources.azurerm_network_security_group.databricks_public_nsg
+[35m	File: \modules\data_resources\main.tf:181-186
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/bc-azr-networking-2
+[97mCheck: CKV_AZURE_10: "Ensure that SSH access is restricted from the internet"
+[32m	PASSED for resource: module.data_resources.azurerm_network_security_group.databricks_public_nsg
+[35m	File: \modules\data_resources\main.tf:181-186
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/bc-azr-networking-3
+[97mCheck: CKV_AZURE_77: "Ensure that UDP Services are restricted from the Internet "
+[32m	PASSED for resource: module.data_resources.azurerm_network_security_group.databricks_public_nsg
+[35m	File: \modules\data_resources\main.tf:181-186
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/ensure-that-udp-services-are-restricted-from-the-internet
+[97mCheck: CKV_AZURE_160: "Ensure that HTTP (port 80) access is restricted from the internet"
+[32m	PASSED for resource: module.data_resources.azurerm_network_security_group.databricks_private_nsg
+[35m	File: \modules\data_resources\main.tf:190-195
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/ensure-azure-http-port-80-access-from-the-internet-is-restricted
+[97mCheck: CKV_AZURE_9: "Ensure that RDP access is restricted from the internet"
+[32m	PASSED for resource: module.data_resources.azurerm_network_security_group.databricks_private_nsg
+[35m	File: \modules\data_resources\main.tf:190-195
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/bc-azr-networking-2
+[97mCheck: CKV_AZURE_10: "Ensure that SSH access is restricted from the internet"
+[32m	PASSED for resource: module.data_resources.azurerm_network_security_group.databricks_private_nsg
+[35m	File: \modules\data_resources\main.tf:190-195
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/bc-azr-networking-3
+[97mCheck: CKV_AZURE_77: "Ensure that UDP Services are restricted from the Internet "
+[32m	PASSED for resource: module.data_resources.azurerm_network_security_group.databricks_private_nsg
+[35m	File: \modules\data_resources\main.tf:190-195
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/ensure-that-udp-services-are-restricted-from-the-internet
+[97mCheck: CKV_AZURE_183: "Ensure that VNET uses local DNS addresses"
+[32m	PASSED for resource: module.network.azurerm_virtual_network.vnet
+[35m	File: \modules\network\main.tf:8-15
+[35m	Calling File: \module_blocks.tf:3-13
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/azr-networking-183
+[97mCheck: CKV_AZURE_182: "Ensure that VNET has at least 2 connected DNS Endpoints"
+[32m	PASSED for resource: module.network.azurerm_virtual_network.vnet
+[35m	File: \modules\network\main.tf:8-15
+[35m	Calling File: \module_blocks.tf:3-13
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/azr-networking-182
+[97mCheck: CKV_AZURE_160: "Ensure that HTTP (port 80) access is restricted from the internet"
+[32m	PASSED for resource: module.network.azurerm_network_security_group.nsg
+[35m	File: \modules\network\main.tf:67-118
+[35m	Calling File: \module_blocks.tf:3-13
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/ensure-azure-http-port-80-access-from-the-internet-is-restricted
+[97mCheck: CKV_AZURE_9: "Ensure that RDP access is restricted from the internet"
+[32m	PASSED for resource: module.network.azurerm_network_security_group.nsg
+[35m	File: \modules\network\main.tf:67-118
+[35m	Calling File: \module_blocks.tf:3-13
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/bc-azr-networking-2
+[97mCheck: CKV_AZURE_10: "Ensure that SSH access is restricted from the internet"
+[32m	PASSED for resource: module.network.azurerm_network_security_group.nsg
+[35m	File: \modules\network\main.tf:67-118
+[35m	Calling File: \module_blocks.tf:3-13
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/bc-azr-networking-3
+[97mCheck: CKV_AZURE_77: "Ensure that UDP Services are restricted from the Internet "
+[32m	PASSED for resource: module.network.azurerm_network_security_group.nsg
+[35m	File: \modules\network\main.tf:67-118
+[35m	Calling File: \module_blocks.tf:3-13
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/ensure-that-udp-services-are-restricted-from-the-internet
+[97mCheck: CKV2_AZURE_47: "Ensure storage account is configured without blob anonymous access"
+[32m	PASSED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \main.tf:14-33
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-iam-policies/bc-azure-2-47
+[97mCheck: CKV2_AZURE_33: "Ensure storage account is configured with private endpoint"
+[32m	PASSED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \main.tf:14-33
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azure-2-33
+[97mCheck: CKV2_AZURE_38: "Ensure soft-delete is enabled on Azure storage account"
+[32m	PASSED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \main.tf:14-33
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azure-2-38
+[97mCheck: CKV2_AZURE_8: "Ensure the storage container storing the activity logs is not publicly accessible"
+[32m	PASSED for resource: module.data_resources.azurerm_storage_container.bronze
+[35m	File: \main.tf:36-40
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-logging-policies/ensure-the-storage-container-storing-the-activity-logs-is-not-publicly-accessible
+[97mCheck: CKV2_AZURE_8: "Ensure the storage container storing the activity logs is not publicly accessible"
+[32m	PASSED for resource: module.data_resources.azurerm_storage_container.gold
+[35m	File: \main.tf:43-47
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-logging-policies/ensure-the-storage-container-storing-the-activity-logs-is-not-publicly-accessible
+[97mCheck: CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
+[32m	PASSED for resource: module.data_resources.azurerm_subnet.databricks_public_subnet
+[35m	File: \main.tf:131-152
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azure-2-31
+[97mCheck: CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
+[32m	PASSED for resource: module.data_resources.azurerm_subnet.databricks_private_subnet
+[35m	File: \main.tf:155-176
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azure-2-31
+[97mCheck: CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
+[32m	PASSED for resource: module.network.azurerm_subnet.private
+[35m	File: \main.tf:18-24
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azure-2-31
+[97mCheck: CKV_AZURE_59: "Ensure that Storage accounts disallow public access"
+[31m	FAILED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \modules\data_resources\main.tf:14-33
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/ensure-that-storage-accounts-disallow-public-access
+[97mCheck: CKV_AZURE_33: "Ensure Storage logging is enabled for Queue service for read, write and delete requests"
+[31m	FAILED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \modules\data_resources\main.tf:14-33
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-logging-policies/enable-requests-on-storage-logging-for-queue-service
+[97mCheck: CKV_AZURE_206: "Ensure that Storage Accounts use replication"
+[31m	FAILED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \modules\data_resources\main.tf:14-33
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/azr-general-206
+[97mCheck: CKV_AZURE_244: "Avoid the use of local users for Azure Storage unless necessary"
+[31m	FAILED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \modules\data_resources\main.tf:14-33
+[35m	Calling File: \module_blocks.tf:15-34
+[97mCheck: CKV_AZURE_158: "Ensure Databricks Workspace data plane to control plane communication happens over private link"
+[31m	FAILED for resource: module.data_resources.azurerm_databricks_workspace.this
+[35m	File: \modules\data_resources\main.tf:67-91
+[35m	Calling File: \module_blocks.tf:15-34
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-networking-policies/ensure-azure-databricks-workspace-is-not-public
+[97mCheck: CKV2_AZURE_40: "Ensure storage account is not configured with Shared Key authorization"
+[31m	FAILED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \main.tf:14-33
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-iam-policies/bc-azure-2-40
+[97mCheck: CKV2_AZURE_41: "Ensure storage account is configured with SAS expiration policy"
+[31m	FAILED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \main.tf:14-33
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-iam-policies/bc-azure-2-41
+[97mCheck: CKV2_AZURE_48: "Ensure that Databricks Workspaces enables customer-managed key for root DBFS encryption"
+[31m	FAILED for resource: module.data_resources.azurerm_databricks_workspace.this
+[35m	File: \main.tf:67-91
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azure-2-48
+[97mCheck: CKV2_AZURE_21: "Ensure Storage logging is enabled for Blob service for read requests"
+[31m	FAILED for resource: module.data_resources.azurerm_storage_container.bronze
+[35m	File: \main.tf:36-40
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-logging-policies/ensure-storage-logging-is-enabled-for-blob-service-for-read-requests
+[97mCheck: CKV2_AZURE_21: "Ensure Storage logging is enabled for Blob service for read requests"
+[31m	FAILED for resource: module.data_resources.azurerm_storage_container.gold
+[35m	File: \main.tf:43-47
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-logging-policies/ensure-storage-logging-is-enabled-for-blob-service-for-read-requests
+[97mCheck: CKV2_AZURE_1: "Ensure storage for critical data are encrypted with Customer Managed Key"
+[31m	FAILED for resource: module.data_resources.azurerm_storage_account.adls
+[35m	File: \main.tf:14-33
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/ensure-storage-for-critical-data-are-encrypted-with-customer-managed-key
+[97mCheck: CKV2_AZURE_31: "Ensure VNET subnet is configured with a Network Security Group (NSG)"
+[31m	FAILED for resource: module.network.azurerm_subnet.bastion
+[35m	File: \main.tf:60-65
+	Guide: [1m[4m[34mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/azure-policies/azure-general-policies/bc-azure-2-31

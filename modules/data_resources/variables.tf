@@ -61,11 +61,11 @@ variable "public_ip_id" {
 }
 
 variable "bronze_container" {
-  description = "Name of the container for raw/bronze data"
+  description = "Name of the container for raw data"
   type        = string
 }
 
 variable "gold_container" {
-  description = "Name of the container for processed/gold data"
+  description = "Name of the container for processed data"
   type        = string
 }

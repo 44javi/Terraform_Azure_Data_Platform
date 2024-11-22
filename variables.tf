@@ -16,12 +16,6 @@ variable "region" {
   type        = string
 }
 
-# Resource Group Name
-#variable "resource_group_name" {
-#  description = "Name of the resource group"
-#  type        = string
-#}
-
 # VNET address space
 variable "vnet_address_space" {
   description = "The address space for the virtual network"
@@ -65,11 +59,11 @@ variable "subscription_id" {
 }
 
 variable "bronze_container" {
-  description = "Container for Bronze: Raw/ingested data"
+  description = "Container for Raw/ingested data"
   type        = string
 }
 
 variable "gold_container" {
-  description = "Container for Gold: Processed/refined data"
+  description = "Container for processed/refined data"
   type        = string
 }

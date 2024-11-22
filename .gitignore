@@ -37,3 +37,7 @@ override.tf.json
 terraform.rc
 
 **/backend*.hcl
+
+# Ignore SAST scans
+**checkov*
+

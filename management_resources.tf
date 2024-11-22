@@ -6,8 +6,6 @@ resource "azurerm_resource_group" "main" {
   location = var.region
 }
 
-
-
 # for tags
 locals {
   default_tags = {
