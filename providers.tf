@@ -27,6 +27,7 @@ terraform {
 # Azure RM provider configuration
 provider "azurerm" {
   subscription_id = var.subscription_id
+  storage_use_azuread = true
   features {}
 }
 
@@ -39,8 +40,9 @@ provider "databricks" {
   alias = "create_workspace"
   # Basic configuration without host
 }
-
-
+/*
+# For creating resources within the workspace
 provider "databricks" {
   host = module.data_resources.workspace_url
 }
+*/

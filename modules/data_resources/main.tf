@@ -21,7 +21,7 @@ resource "azurerm_storage_account" "adls" {
   is_hns_enabled                  = "true"
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = true #false blocks access to containers on the portal unless ip range is allowed
-  #shared_access_key_enabled = false
+  shared_access_key_enabled = false
 
   
 
@@ -92,42 +92,7 @@ resource "azurerm_databricks_workspace" "this" {
   ]
 }
 
-locals {
-  notebook_template = file("${path.module}/notebooks/gzip_to_parquet.py")
-  notebook_content = replace(
-    replace(
-      replace(
-        replace(
-          replace(
-            local.notebook_template,
-            "STORAGE_ACCOUNT_NAME",
-            azurerm_storage_account.adls.name
-          ),
-          "BRONZE_CONTAINER_NAME",
-          var.bronze_container
-        ),
-        "GOLD_CONTAINER_NAME",
-        var.gold_container
-      ),
-      "MANAGED_IDENTITY_CLIENT_ID",
-      azurerm_user_assigned_identity.databricks.client_id
-    ),
-    "TENANT_ID",
-    data.azurerm_client_config.current.tenant_id
-  )
-}
 
-resource "databricks_notebook" "gzip_to_parquet" {
-  path     = "/Shared/transformation/gzip_to_parquet"
-  language = "PYTHON"
-  source   = "${path.module}/notebooks/gzip_to_parquet.py"
-
-  depends_on = [
-    azurerm_databricks_workspace.this,
-    azurerm_storage_container.bronze,
-    azurerm_storage_container.gold
-  ]
-}
 
 # Public Subnet for Databricks
 resource "azurerm_subnet" "databricks_public_subnet" {

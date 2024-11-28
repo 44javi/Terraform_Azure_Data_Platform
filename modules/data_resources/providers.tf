@@ -1,7 +1,4 @@
-# Only needed if creating Databrick workspace resources like notebooks or clusters through terraform
-
-# data_resources module versions.tf
-
+# data_resources_providers.tf
 
 terraform {
   required_providers {
@@ -15,6 +12,8 @@ terraform {
     }
   }
 }
+
+/*
 
 module "jobs" {
   source = "./jobs"
@@ -38,3 +37,5 @@ module "jobs" {
     azurerm_role_assignment.databricks_adls_access
   ]
 }
+
+*/

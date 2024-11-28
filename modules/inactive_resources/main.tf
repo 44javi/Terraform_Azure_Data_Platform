@@ -189,7 +189,7 @@ output "vpn_shared_key" {
 }
 
 # Create the Gateway Subnet for the VPN
-resource "azurerm_subnet" "gateway_subnet" {
+resource "azurerm_subnet" "gateway_vpn" {
   name                 = "GatewaySubnet"
   resource_group_name  = azurerm_resource_group.dev-rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
@@ -255,6 +255,9 @@ resource "azurerm_virtual_network_gateway_connection" "vpn_connection" {
     pfs_group              = "PFS14" # or PFS19 uses Elliptic Curve Cryptography
   }
 }
+
+-----------------------------------------------------------------------------------------------------------------------
+
 */
 
 
@@ -263,7 +266,97 @@ resource "azurerm_virtual_network_gateway_connection" "vpn_connection" {
 # data_pipeline
 
 
+
+
 /*
+
+
+# Only needed if creating Databrick workspace resources like notebooks or clusters through terraform
+# data_resources_providers.tf
+
+/*
+
+
+
+
+terraform {
+  required_providers {
+    databricks = {
+      source  = "databricks/databricks"
+      version = "1.5.0"
+    }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.9"
+    }
+  }
+}
+
+module "jobs" {
+  source = "./jobs"
+
+  providers = {
+    databricks = databricks
+  }
+
+  client                    = var.client
+  suffix                    = var.suffix
+  databricks_identity_id = azurerm_user_assigned_identity.databricks.client_id
+  tenant_id                 = data.azurerm_client_config.current.tenant_id
+  notebook_path            = databricks_notebook.gzip_to_parquet.path
+  storage_account_name     = azurerm_storage_account.adls.name
+  bronze_container         = var.bronze_container
+  gold_container          = var.gold_container
+
+  depends_on = [
+    azurerm_databricks_workspace.this,
+    databricks_notebook.gzip_to_parquet,
+    azurerm_role_assignment.databricks_adls_access
+  ]
+}
+
+
+
+
+locals {
+  notebook_template = file("${path.module}/notebooks/gzip_to_parquet.py")
+  notebook_content = replace(
+    replace(
+      replace(
+        replace(
+          replace(
+            local.notebook_template,
+            "STORAGE_ACCOUNT_NAME",
+            azurerm_storage_account.adls.name
+          ),
+          "BRONZE_CONTAINER_NAME",
+          var.bronze_container
+        ),
+        "GOLD_CONTAINER_NAME",
+        var.gold_container
+      ),
+      "MANAGED_IDENTITY_CLIENT_ID",
+      azurerm_user_assigned_identity.databricks.client_id
+    ),
+    "TENANT_ID",
+    data.azurerm_client_config.current.tenant_id
+  )
+}
+
+resource "databricks_notebook" "gzip_to_parquet" {
+  path     = "/Shared/transformation/gzip_to_parquet"
+  language = "PYTHON"
+  source   = "${path.module}/notebooks/gzip_to_parquet.py"
+
+  depends_on = [
+    azurerm_databricks_workspace.this,
+    azurerm_storage_container.bronze,
+    azurerm_storage_container.gold
+  ]
+}
+
+
+
 # Compute and scheduling to be handled by Data Factory 
 leaving it here in case that wants to be changed in the future
 
