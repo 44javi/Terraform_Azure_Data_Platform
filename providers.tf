@@ -3,7 +3,6 @@
 terraform {
   backend "azurerm" {} # Settings come from backend.hcl
 
-  # Provider requirements
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -19,30 +18,27 @@ terraform {
     }
     databricks = {
       source  = "databricks/databricks"
-      version = "1.5.0"
+      version = "~> 1.5.0"
     }
   }
 }
 
-# Azure RM provider configuration
 provider "azurerm" {
   subscription_id = var.subscription_id
   storage_use_azuread = true
   features {}
 }
 
-# Azure AD provider configuration
 provider "azuread" {
   # configuration options
 }
 
 provider "databricks" {
+  # Alias for creating the Databricks workspace
   alias = "create_workspace"
-  # Basic configuration without host
 }
-/*
-# For creating resources within the workspace
+
 provider "databricks" {
-  host = module.data_resources.workspace_url
+  alias = "workspace_resources"
+  host = module.databricks_workspace.workspace_url
 }
-*/

@@ -3,11 +3,28 @@
 # Get Azure subscription details
 data "azurerm_client_config" "current" {}
 
+data "databricks_current_user" "me" {
+  depends_on = [databricks_metastore.this]
+}
+
 # Random string for storage names
 resource "random_string" "this" {
   length  = 6
   special = false
   upper   = false
+}
+
+# Assigned to the VMs that need access to the datalake
+resource "azurerm_user_assigned_identity" "datalake" {
+  name                = "${var.client}_datalake_access_${var.suffix}"
+  resource_group_name = var.resource_group_name
+  location            = var.region
+}
+
+resource "azurerm_role_assignment" "datalake_blob_contributor" {
+  scope                = azurerm_storage_account.adls.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azurerm_user_assigned_identity.datalake.principal_id
 }
 
 # Data Lake Storage
@@ -20,10 +37,8 @@ resource "azurerm_storage_account" "adls" {
   account_kind                    = "StorageV2"
   is_hns_enabled                  = "true"
   allow_nested_items_to_be_public = false
-  public_network_access_enabled   = true #false blocks access to containers on the portal unless ip range is allowed
-  shared_access_key_enabled = false
-
-  
+  public_network_access_enabled   = true #false blocks access to containers on the portal
+  #shared_access_key_enabled = false
 
   tags = var.default_tags
 
@@ -35,19 +50,15 @@ resource "azurerm_storage_account" "adls" {
 
 }
 
-# Container for raw (input) data
-resource "azurerm_storage_container" "bronze" {
-  name                  = var.bronze_container
-  storage_account_id    = azurerm_storage_account.adls.id
+# Containers for 
+
+resource "azurerm_storage_container" "this" {
+  for_each              = toset(["bronze", "silver", "gold", "catalog"])
+  name                  = each.key
+  storage_account_id  = azurerm_storage_account.adls.id
   container_access_type = "private"
 }
 
-# Container for processed (output) data
-resource "azurerm_storage_container" "gold" {
-  name                  = var.gold_container
-  storage_account_id    = azurerm_storage_account.adls.id
-  container_access_type = "private"
-}
 
 # Private Endpoint for ADLS (Azure Data Lake Storage)
 resource "azurerm_private_endpoint" "adls" {
@@ -66,40 +77,90 @@ resource "azurerm_private_endpoint" "adls" {
   }
 }
 
-# Create Azure Databricks Workspace + VNet injection
-resource "azurerm_databricks_workspace" "this" {
-  name                          = "${var.client}_databricks_workspace_${var.suffix}"
-  resource_group_name           = var.resource_group_name
-  location                      = var.region
-  sku                           = "premium"                                   # Chose premium for job clusters and private endpoint other extras are  Role-Based Access Control (RBAC), Audit Logs, and Cluster Policies.
-  public_network_access_enabled = true                                        # For private connectivity set to false
-  managed_resource_group_name   = "${var.client}_databricks_rg_${var.suffix}" # Databricks creates a mandatory managed RG
 
-  tags = var.default_tags
-
-  custom_parameters {
-    no_public_ip                                         = true
-    virtual_network_id                                   = var.vnet_id
-    public_subnet_name                                   = azurerm_subnet.databricks_public_subnet.name
-    private_subnet_name                                  = azurerm_subnet.databricks_private_subnet.name
-    public_subnet_network_security_group_association_id  = azurerm_subnet_network_security_group_association.nsg_assoc_public.id
-    private_subnet_network_security_group_association_id = azurerm_subnet_network_security_group_association.nsg_assoc_private.id
+# Unity Catalog Access Connector
+resource "azurerm_databricks_access_connector" "unity" {
+  name                = "${var.client}_Unity_Catalog_${var.suffix}"
+  resource_group_name = var.resource_group_name
+  location           = var.region
+  identity {
+    type = "SystemAssigned"
   }
-
-  depends_on = [
-    azurerm_subnet_network_security_group_association.nsg_assoc_public,
-    azurerm_subnet_network_security_group_association.nsg_assoc_private
-  ]
 }
 
+# Datalake access for Unity Catalog connector
+resource "azurerm_role_assignment" "unity_storage" {
+  scope                = azurerm_storage_account.adls.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azurerm_databricks_access_connector.unity.identity[0].principal_id
+}
 
+resource "azurerm_role_assignment" "unity_queue" {
+  scope                = azurerm_storage_account.adls.id
+  role_definition_name = "Storage Queue Data Contributor"
+  principal_id         = azurerm_databricks_access_connector.unity.identity[0].principal_id
+}
+
+# Resource group access for Unity Catalog connector - EventGrid EventSubscription Contributor
+resource "azurerm_role_assignment" "unity_eventsubscription" {
+  scope                = var.resource_group_id
+  role_definition_name = "EventGrid EventSubscription Contributor"
+  principal_id         = azurerm_databricks_access_connector.unity.identity[0].principal_id
+}
+
+# Metastore
+resource "databricks_metastore" "this" {
+  name          = "primary"
+  storage_root  = "abfss://catalog@${azurerm_storage_account.adls.name}.dfs.core.windows.net/"
+  force_destroy = true
+
+  provider = databricks.workspace_resources
+}
+
+# Catalog
+resource "databricks_catalog" "main" {
+  metastore_id = databricks_metastore.this.id
+  name         = "${var.client}_dev_catalog"
+  comment      = "Development catalog for client"
+  properties = {
+    purpose = "development"
+  }
+
+  provider = databricks.workspace_resources
+}
+
+resource "databricks_storage_credential" "unity" {
+  name = "unity_catalog_credential"
+  azure_managed_identity {
+    access_connector_id = azurerm_databricks_access_connector.unity.id
+  }
+
+  provider = databricks.workspace_resources
+}
+
+# External Locations
+resource "databricks_external_location" "this" {
+  for_each = toset(["bronze", "gold"])
+  name     = "${each.key}_container"
+  url      = "abfss://${each.key}@${azurerm_storage_account.adls.name}.dfs.core.windows.net/"
+  credential_name = databricks_storage_credential.unity.name
+  comment  = "External location for ${each.key} container"
+}
+
+# Schemas
+resource "databricks_schema" "schemas" {
+  for_each      = toset(["bronze_container_schema", "gold_container_schema"])
+  catalog_name  = databricks_catalog.main.name
+  name          = each.key
+  comment       = "Schema for ${each.key} data"
+}
 
 # Public Subnet for Databricks
 resource "azurerm_subnet" "databricks_public_subnet" {
   name                 = "${var.client}_databricks_public_subnet_${var.suffix}"
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.vnet_name
-  address_prefixes     = [var.subnet_address_prefixes["databricks_public_subnet"]]
+  address_prefixes     = [var.subnet_address_prefixes["databricks_public_subnet"]] 
 
   # Disable default outbound access
   default_outbound_access_enabled = false
@@ -123,7 +184,7 @@ resource "azurerm_subnet" "databricks_private_subnet" {
   name                 = "${var.client}_databricks_private_subnet_${var.suffix}"
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.vnet_name
-  address_prefixes     = [var.subnet_address_prefixes["databricks_private_subnet"]]
+  address_prefixes     = [var.subnet_address_prefixes["databricks_private_subnet"]] 
 
   # Disable default outbound access
   default_outbound_access_enabled = false
@@ -188,31 +249,9 @@ resource "azurerm_subnet_nat_gateway_association" "databricks_private" {
 }
 
 
-# Data Permissions
-
 /*
-# Managed Identity for Azure Data Factory (ADF)
-# This creates a user-assigned managed identity for ADF
-resource "azurerm_user_assigned_identity" "adf" {
-  name                = "adf-managed-identity"
-  resource_group_name = var.resource_group_name
-  location            = var.region
-}
 
-# Role Assignment for Azure Data Factory (ADF) to Access ADLS Gen2
-resource "azurerm_role_assignment" "adf_adls" {
-  scope                = azurerm_storage_account.adls_storage.id
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = azurerm_user_assigned_identity.adf_identity.principal_id
-}
-
-# Role Assignment for Azure Data Factory (ADF) to Access Databricks Workspace
-resource "azurerm_role_assignment" "adf_databricks" {
-  scope                = azurerm_databricks_workspace.this.id
-  role_definition_name = "Contributor"
-  principal_id         = azurerm_user_assigned_identity.adf_identity.principal_id
-}
-*/
+# Data Permissions
 
 # User assigned identity for databricks
 resource "azurerm_user_assigned_identity" "databricks" {
@@ -235,3 +274,4 @@ resource "azurerm_role_assignment" "databricks_identity_access" {
   principal_id         = azurerm_user_assigned_identity.databricks.principal_id
 }
 
+*/

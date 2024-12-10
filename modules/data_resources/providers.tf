@@ -1,9 +1,8 @@
 # data_resources_providers.tf
-
 terraform {
   required_providers {
     databricks = {
-      source  = "databricks/databricks"
+      source = "databricks/databricks"
       version = "1.5.0"
     }
     azurerm = {
@@ -11,6 +10,10 @@ terraform {
       version = "~> 4.9"
     }
   }
+}
+
+provider "databricks" {
+  alias = "workspace_resources"
 }
 
 /*

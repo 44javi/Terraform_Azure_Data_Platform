@@ -69,3 +69,13 @@ variable "gold_container" {
   description = "Name of the container for processed data"
   type        = string
 }
+
+variable "workspace_url" {
+  description = "The URL of the Databricks workspace"
+  type        = string
+}
+
+variable "workspace_id" {
+  description = "The ID of the Databricks workspace"
+  type        = string
+}

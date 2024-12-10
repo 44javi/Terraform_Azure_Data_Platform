@@ -10,19 +10,18 @@ variable "environment" {
   type        = string
 }
 
-# Region
 variable "region" {
   description = "Region where resources will be created"
   type        = string
 }
 
-# VNET address space
+
 variable "vnet_address_space" {
   description = "The address space for the virtual network"
   type        = list(string)
 }
 
-# Subnet address prefixes
+
 variable "subnet_address_prefixes" {
   description = "A map of address prefixes for each subnet"
   type        = map(string)
@@ -39,7 +38,7 @@ variable "suffix" {
 }
 
 variable "owner" {
-  description = "Person responsable for the resource"
+  description = "Person responsible for the resource"
   type        = string
 }
 
@@ -54,7 +53,7 @@ variable "created_by" {
 }
 
 variable "subscription_id" {
-  description = "Subcription_ID to deploy resources to"
+  description = "Subscription_ID to deploy resources to"
   type        = string
 }
 

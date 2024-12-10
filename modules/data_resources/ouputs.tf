@@ -22,17 +22,23 @@ output "datalake_connection" {
 
 */
 
-output "workspace_url" {
-  description = "The workspace URL of the Databricks workspace"
-  value       = azurerm_databricks_workspace.this.workspace_url
+output "databricks_public_subnet_name" {
+  value = azurerm_subnet.databricks_public_subnet.name
 }
 
-output "workspace_id" {
-  description = "The ID of the Databricks workspace"
-  value       = azurerm_databricks_workspace.this.id
+output "databricks_private_subnet_name" {
+  value = azurerm_subnet.databricks_private_subnet.name
 }
 
-output "databricks_identity_id" {
-  description = "Client ID of the user-assigned managed identity for Databricks"
-  value       = azurerm_user_assigned_identity.databricks.client_id
+output "databricks_public_subnet_nsg_assoc_id" {
+  value = azurerm_subnet_network_security_group_association.nsg_assoc_public.id
+}
+
+output "databricks_private_subnet_nsg_assoc_id" {
+  value = azurerm_subnet_network_security_group_association.nsg_assoc_private.id
+}
+
+# Output current user info
+output "current_user" {
+  value = data.databricks_current_user.me.user_name
 }
