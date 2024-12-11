@@ -42,16 +42,16 @@ Databricks CLI - https://docs.databricks.com/en/dev-tools/cli/install.html
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_alert_email"></a> [alert\_email](#input\_alert\_email) | Email used for monitoring alerts | `string` | n/a | yes |
-| <a name="input_bronze_container"></a> [bronze\_container](#input\_bronze\_container) | Container for Bronze: Raw/ingested data | `string` | n/a | yes |
+| <a name="input_bronze_container"></a> [bronze\_container](#input\_bronze\_container) | Container for Raw/ingested data | `string` | n/a | yes |
 | <a name="input_client"></a> [client](#input\_client) | Client name for resource naming. | `string` | n/a | yes |
 | <a name="input_created_by"></a> [created\_by](#input\_created\_by) | Tag showing Terraform created this resource | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment for the resources (e.g., dev, prod). | `string` | n/a | yes |
-| <a name="input_gold_container"></a> [gold\_container](#input\_gold\_container) | Container for Gold: Processed/refined data | `string` | n/a | yes |
-| <a name="input_owner"></a> [owner](#input\_owner) | Person responsable for the resource | `string` | n/a | yes |
+| <a name="input_gold_container"></a> [gold\_container](#input\_gold\_container) | Container for Processed/refined data | `string` | n/a | yes |
+| <a name="input_owner"></a> [owner](#input\_owner) | Person responsible for the resource | `string` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | Main project associated with this deployment | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | Region where resources will be created | `string` | n/a | yes |
 | <a name="input_subnet_address_prefixes"></a> [subnet\_address\_prefixes](#input\_subnet\_address\_prefixes) | A map of address prefixes for each subnet | `map(string)` | n/a | yes |
-| <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Subcription\_ID to deploy resources to | `string` | n/a | yes |
+| <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Subscription\_ID to deploy resources to | `string` | n/a | yes |
 | <a name="input_suffix"></a> [suffix](#input\_suffix) | Numerical identifier for resources | `string` | n/a | yes |
 | <a name="input_vnet_address_space"></a> [vnet\_address\_space](#input\_vnet\_address\_space) | The address space for the virtual network | `list(string)` | n/a | yes |
 

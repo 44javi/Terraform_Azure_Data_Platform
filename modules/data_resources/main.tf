@@ -101,7 +101,7 @@ resource "azurerm_role_assignment" "unity_queue" {
   principal_id         = azurerm_databricks_access_connector.unity.identity[0].principal_id
 }
 
-# Resource group access for Unity Catalog connector - EventGrid EventSubscription Contributor
+# Resource group access for Unity Catalog connector
 resource "azurerm_role_assignment" "unity_eventsubscription" {
   scope                = var.resource_group_id
   role_definition_name = "EventGrid EventSubscription Contributor"

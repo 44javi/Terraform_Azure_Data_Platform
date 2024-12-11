@@ -24,7 +24,7 @@ terraform {
 }
 
 provider "azurerm" {
-  subscription_id = var.subscription_id
+  subscription_id     = var.subscription_id
   storage_use_azuread = true
   features {}
 }
@@ -34,11 +34,10 @@ provider "azuread" {
 }
 
 provider "databricks" {
-  # Alias for creating the Databricks workspace
   alias = "create_workspace"
 }
 
 provider "databricks" {
   alias = "workspace_resources"
-  host = module.databricks_workspace.workspace_url
+  host  = module.databricks_workspace.workspace_url
 }

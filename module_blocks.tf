@@ -29,8 +29,8 @@ module "data_resources" {
   default_tags            = local.default_tags
   nat_gateway_id          = module.network.nat_gateway_id
   public_ip_id            = module.network.public_ip_id
-  bronze_container        = var.bronze_container
-  gold_container          = var.gold_container
+  #bronze_container        = var.bronze_container
+  #gold_container          = var.gold_container
   workspace_url           = module.databricks_workspace.workspace_url
   workspace_id            = module.databricks_workspace.workspace_id
 }

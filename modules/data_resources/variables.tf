@@ -12,12 +12,12 @@ variable "resource_group_id" {
 
 variable "region" {
   description = "Region where resources will be created"
-  type = string
+  type        = string
 }
 
 variable "client" {
   description = "Client name for resource naming"
-  type = string
+  type        = string
 }
 
 variable "suffix" {
@@ -26,18 +26,18 @@ variable "suffix" {
 }
 
 variable "default_tags" {
-    description = "Default tags to apply to all resources"
-  type = map(string)
+  description = "Default tags to apply to all resources"
+  type        = map(string)
 }
 
 variable "subnet_id" {
   description = "Private subnet id"
-  type = string
+  type        = string
 }
 
 variable "vnet_id" {
   description = "Hub virtual network id"
-  type = string
+  type        = string
 }
 
 variable "vnet_name" {
@@ -52,14 +52,14 @@ variable "subnet_address_prefixes" {
 
 variable "nat_gateway_id" {
   description = "nat gateway id"
-  type = string
+  type        = string
 }
 
 variable "public_ip_id" {
   description = "id of gateway public ip"
-  type = string
+  type        = string
 }
-
+/*
 variable "bronze_container" {
   description = "Name of the container for raw data"
   type        = string
@@ -69,6 +69,7 @@ variable "gold_container" {
   description = "Name of the container for processed data"
   type        = string
 }
+*/
 
 variable "workspace_url" {
   description = "The URL of the Databricks workspace"
