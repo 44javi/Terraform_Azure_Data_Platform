@@ -15,6 +15,11 @@ variable "region" {
   type        = string
 }
 
+variable "secondary_region" {
+  description = "2nd region for resource creation"
+  type        = string
+  
+}
 
 variable "vnet_address_space" {
   description = "The address space for the virtual network"
@@ -64,5 +69,10 @@ variable "bronze_container" {
 
 variable "gold_container" {
   description = "Container for processed/refined data"
+  type        = string
+}
+
+variable "metastore_id" {
+  description = "ID of the default Databricks metastore"
   type        = string
 }

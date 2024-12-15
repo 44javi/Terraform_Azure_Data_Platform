@@ -45,20 +45,6 @@ variable "vnet_name" {
   type        = string
 }
 
-variable "subnet_address_prefixes" {
-  description = "A map of address prefixes for each subnet"
-  type        = map(string)
-}
-
-variable "nat_gateway_id" {
-  description = "nat gateway id"
-  type        = string
-}
-
-variable "public_ip_id" {
-  description = "id of gateway public ip"
-  type        = string
-}
 /*
 variable "bronze_container" {
   description = "Name of the container for raw data"
@@ -70,13 +56,3 @@ variable "gold_container" {
   type        = string
 }
 */
-
-variable "workspace_url" {
-  description = "The URL of the Databricks workspace"
-  type        = string
-}
-
-variable "workspace_id" {
-  description = "The ID of the Databricks workspace"
-  type        = string
-}

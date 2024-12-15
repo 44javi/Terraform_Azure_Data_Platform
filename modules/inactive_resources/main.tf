@@ -55,7 +55,7 @@ resource "azurerm_storage_account" "this" {
 
 # Create container in the storage account for state
 resource "azurerm_storage_container" "this" {
-  name                  = "tfstate"
+  name                  = "Data_Platform"
   storage_account_id    = azurerm_storage_account.this.id
   container_access_type = "private"
 }
@@ -272,7 +272,7 @@ resource "azurerm_virtual_network_gateway_connection" "vpn_connection" {
 
 
 # Only needed if creating Databrick workspace resources like notebooks or clusters through terraform
-# data_resources_providers.tf
+
 
 /*
 
@@ -401,8 +401,6 @@ resource "databricks_job" "gzip_to_parquet_job" {
 }
 
 
-
-# Cannot be used with secure cluster connectivity
 # Private Endpoint for Databricks 
 resource "azurerm_private_endpoint" "databricks_private_endpoint" {
   name                = "databricks-pe"
